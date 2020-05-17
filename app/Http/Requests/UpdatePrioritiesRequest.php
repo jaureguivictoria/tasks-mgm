@@ -25,6 +25,7 @@ class UpdatePrioritiesRequest extends FormRequest
     {
         return [
             'sorted_priorities' => [
+                'required',
                 'array',
             ],
             'sorted_priorities.*' => [

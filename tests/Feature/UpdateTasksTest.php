@@ -73,4 +73,74 @@ class UpdateTasksTest extends TestCase
         ]);
     }
 
+    public function testCanBulkUpdateTasksPriority()
+    {
+        $project = factory(Project::class)->state('withTasks')->create();
+
+        $first = $project->tasks[0];
+        $second = $project->tasks[1];
+        $third = $project->tasks[2];
+
+        $payload = [
+            'sorted_priorities' => [
+                $third->id,
+                $first->id,
+                $second->id
+            ],
+        ];
+
+        $this->putJson(route('tasks.sort', $project), $payload)
+            ->assertOk();
+
+        $this->assertDatabaseHas('tasks', [
+            'id' => $third->id,
+            'priority' => 0
+        ]);
+
+        $this->assertDatabaseHas('tasks', [
+            'id' => $first->id,
+            'priority' => 1
+        ]);
+
+        $this->assertDatabaseHas('tasks', [
+            'id' => $second->id,
+            'priority' => 2
+        ]);
+    }
+
+
+    public function invalidTaskPrioritiesPayload(): array
+    {
+        return [
+            'sorted_priorities is required' => [
+                [],
+                ['sorted_priorities']
+            ],
+            'sorted_priorities must be an array' => [
+                ['sorted_priorities' => '1'],
+                ['sorted_priorities']
+            ],
+            'sorted_priorities must be contain numbers' => [
+                ['sorted_priorities' => ['a']],
+                ['sorted_priorities.0']
+            ],
+            'sorted_priorities cannot be less than 0' => [
+                ['sorted_priorities' => [-1]],
+                ['sorted_priorities.0']
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidTaskPrioritiesPayload
+     */
+    public function testCannotBulkUpdateTasksPriorities(array $payload, array $expectedErrors)
+    {
+        $project = factory(Project::class)->state('withTasks')->create();
+
+        $this->putJson(route('tasks.sort', $project), $payload)
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonValidationErrors($expectedErrors);
+    }
+
 }
