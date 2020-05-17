@@ -23,7 +23,7 @@ class ProjectTasksController extends Controller
             'priority' => $project->tasks()->count()
         ]);
 
-        return view('tasks', ['project' => $project]);
+        return redirect()->route('tasks.index', ['project' => $project]);
     }
 
     public function update(UpdateProjectTaskRequest $request, Task $task)
