@@ -21,15 +21,6 @@
                     <label for="name">Name</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" aria-describedby="name" required value="{{$task->name}}">
                 </div>
-                <div class="form-group">
-                    <label for="name">Priority</label>
-                    <select class="custom-select @error('priority') is-invalid @enderror" name="priority">
-                        <option value="1" {{ $task->priority == 1 ? 'selected' : '' }}>One</option>
-                        <option value="2" {{ $task->priority == 2 ? 'selected' : '' }}>Two</option>
-                        <option value="3" {{ $task->priority == 3 ? 'selected' : '' }}>Three</option>
-                    </select>
-                </div>
-
                 <button type="submit" class="btn btn-primary">Save</button>
                 <a href="{{route('tasks.index', $task->project)}}" class="btn btn-secondary">Back</a>
             </form>

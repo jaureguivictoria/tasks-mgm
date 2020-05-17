@@ -20,3 +20,4 @@ Route::post('projects/{project}/tasks', 'ProjectTasksController@store')->name('t
 Route::patch('tasks/{task}', 'ProjectTasksController@update')->name('tasks.update');
 Route::get('projects/{project}/tasks/{task}', 'ProjectTasksController@view')->name('tasks.view');
 Route::delete('tasks/{task}', 'ProjectTasksController@destroy')->name('tasks.destroy');
+Route::put('tasks', 'ProjectTasksController@updatePriorities')->name('tasks.sort');

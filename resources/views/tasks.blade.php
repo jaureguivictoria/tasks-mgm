@@ -1,14 +1,49 @@
 @extends('layout.base')
 
+@section('styles')
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@endsection
+
+@section('scripts')
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $( function() {
+            $( "#sortable" ).sortable({
+                revert: true,
+                stop: function( event, ui ) {
+                    const sortedPriorities = $( "#sortable" ).sortable("toArray");
+
+                    console.log(sortedPriorities);
+                    $.ajax({
+                        type: "PUT",
+                        dataType: "JSON",
+                        url: "{{route('tasks.sort')}}",
+                        data: {
+                            "sorted_priorities": sortedPriorities,
+                            "_token": "{{csrf_token()}}",
+                        },
+                        success: function(e) {
+                            alert('Priority updated');
+                        }
+                    })
+                }
+            });
+        } );
+    </script>
+@endsection
+
+
 @section('content')
     @if($project->tasks->isNotEmpty())
     <div class="row">
         <div class="col">
             <h2>Here are {{$project->name}} tasks</h2>
 
-            <div class="list-group">
+            <div class="list-group" id="sortable">
                 @foreach($project->tasks as $task)
-                    <a href="{{route('tasks.view', [$project, $task])}}" class="list-group-item list-group-item-action">
+                    <a href="{{route('tasks.view', [$project, $task])}}" id="{{$task->id}}" class="list-group-item list-group-item-action">
                         {{$task->name}}
                     </a>
                 @endforeach
@@ -36,14 +71,6 @@
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" aria-describedby="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="name">Priority</label>
-                    <select class="custom-select @error('priority') is-invalid @enderror" name="priority">
-                        <option value="1" selected>One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>

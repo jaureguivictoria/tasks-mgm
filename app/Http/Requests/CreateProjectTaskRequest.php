@@ -29,11 +29,6 @@ class CreateProjectTaskRequest extends FormRequest
                 'string',
                 'max:255',
             ],
-            'priority' => [
-                'required',
-                'integer',
-                'between:1,3',
-            ],
         ];
     }
 }
