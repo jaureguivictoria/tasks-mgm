@@ -1,6 +1,6 @@
 # Coalition code test by Vicky Jáuregui
 
-This is a tasks management application using Laravel, MySQL, Bootstrap and Vagrant for virtualization.
+This is a tasks management application using Laravel, MySQL, Laravel Mix, Bootstrap and Vagrant for virtualization.
 
 ## Test instructions
 Create a very simple Laravel web application for task management: 
@@ -27,6 +27,15 @@ cd code
 php artisan generate:key
 php artisan migrate
 ```
+
+### Compile the assets
+Run all Laravel Mix tasks:
+
+```npm run dev```
+
+Run all Laravel Mix tasks and minify output:
+
+```npm run production```
 
 ## Testing
 Inside the virtual machine run:
