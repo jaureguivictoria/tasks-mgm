@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'ProjectsController@index')->name('projects.index');
+Route::post('projects', 'ProjectsController@store')->name('projects.store');
+Route::get('projects/{project}/tasks', 'ProjectTasksController@index')->name('tasks.index');
+Route::post('projects/{project}/tasks', 'ProjectTasksController@store')->name('tasks.store');
+Route::patch('tasks/{task}', 'ProjectTasksController@update')->name('tasks.update');
+Route::get('projects/{project}/tasks/{task}', 'ProjectTasksController@view')->name('tasks.view');
+Route::delete('tasks/{task}', 'ProjectTasksController@destroy')->name('tasks.destroy');
