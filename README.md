@@ -14,6 +14,8 @@ Create a very simple Laravel web application for task management:
 
 ## Installation
 
+Add the local domain `homestead.test` to your  file in `etc/hosts`
+ 
 ```bash
 vagrant up
 ```
