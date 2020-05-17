@@ -10,6 +10,7 @@
 
     <script>
         $( function() {
+
             $( "#sortable" ).sortable({
                 revert: true,
                 stop: function( event, ui ) {
@@ -25,7 +26,10 @@
                             "_token": "{{csrf_token()}}",
                         },
                         success: function(e) {
-                            alert('Priority updated');
+                            $(".alert-success").show();
+                            setTimeout(function() {
+                                $(".alert-success").hide();
+                            }, 2000);
                         }
                     })
                 }
@@ -40,6 +44,8 @@
     <div class="row">
         <div class="col">
             <h2>Here are {{$project->name}} tasks</h2>
+
+            <div class="alert alert-success" role="alert" style="display: none;">Priorities updated</div>
 
             <div class="list-group" id="sortable">
                 @foreach($project->tasks as $task)
